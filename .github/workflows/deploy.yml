@@ -29,4 +29,4 @@ jobs:
           publish_dir: ./dist
           user_name: 'Sofia1523'
           user_email: 'Sofia1523@example.com'
-          force_orphan: true  # создаёт новую ветку gh-pages, если не существует
+          force_orphan: true
