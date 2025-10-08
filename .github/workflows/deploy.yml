@@ -1,36 +1,36 @@
-name: Deploy
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - main
-
-permissions:
-  contents: write
+      - main  # деплой только при пуше в main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
+    steps:
+      # 1. Клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Устанавливаем Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: '18' # версия Node.js
 
+      # 3. Устанавливаем зависимости
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
+      # 4. Собираем проект
       - name: Build project
         run: npm run build
 
+      # 5. Деплоим на GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          user_name: 'Sofia1523'
-          user_email: 'Sofia1523@example.com'
-
-          force_orphan: false
