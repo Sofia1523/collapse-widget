@@ -1,19 +1,36 @@
 export default class Collapse {
-    constructor(container) {
-      this.container = container;
-      this.button = this.container.querySelector('.collapse__button');
-      this.content = this.container.querySelector('.collapse__content');
-  
-      this.button.addEventListener('click', () => this.toggle());
+    constructor(selector) {
+      this.elements = document.querySelectorAll(selector);
+      this.init();
     }
   
-    toggle() {
-      if (this.content.classList.contains('active')) {
-        this.content.style.maxHeight = null;
-        this.content.classList.remove('active');
+    init() {
+      this.elements.forEach(el => {
+        el.addEventListener('click', () => this.toggle(el));
+      });
+    }
+  
+    toggle(el) {
+      const contentText = el.getAttribute('data-content');
+      let contentDiv = el.querySelector('.collapse-content');
+  
+      if (!contentDiv) {
+        contentDiv = document.createElement('div');
+        contentDiv.className = 'collapse-content';
+        contentDiv.textContent = contentText;
+        contentDiv.style.height = '0px';
+        contentDiv.style.overflow = 'hidden';
+        contentDiv.style.transition = 'height 0.3s ease';
+        el.appendChild(contentDiv);
+  
+        // Триггерим раскрытие
+        requestAnimationFrame(() => {
+          contentDiv.style.height = contentDiv.scrollHeight + 'px';
+        });
       } else {
-        this.content.classList.add('active');
-        this.content.style.maxHeight = this.content.scrollHeight + 'px';
+        // Скрытие
+        contentDiv.style.height = '0px';
+        setTimeout(() => contentDiv.remove(), 300);
       }
     }
   }

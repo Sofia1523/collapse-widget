@@ -32,4 +32,5 @@ jobs:
           publish_dir: ./dist
           user_name: 'Sofia1523'
           user_email: 'Sofia1523@example.com'
-          force_orphan: false   # НЕ создаём gh-pages локально
+
+          force_orphan: false
